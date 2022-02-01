@@ -10,12 +10,21 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/all/matches')
 
-names = driver.find_elements_by_class_name("af24c")
+games = driver.find_elements_by_class_name("_4a05b")
 
-for n in names:
-    n = n.text.strip()
-    if(len(n) != 0):
-        print(n)
+for game in games:
+    names = game.find_elements_by_class_name("af24c")
+    for name in names:
+        name = name.text.strip()
+        if(len(name) != 0):
+            print(name)
+
+    odds = game.find_elements_by_xpath('.//span[@class = "_5a5c0"]')
+    for odd in odds:
+        odd = odd.text.strip()
+        if(len(odd) != 0):
+            print(odd)
+
 
 driver.close()
 driver.quit()
