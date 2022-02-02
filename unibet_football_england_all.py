@@ -32,16 +32,16 @@ while not visible:
 
 # ----------------------------------    open others competitions  -------------------------------------------
 
-visible = False
+# visible = False
 
-while not visible:
-    try:
-        buttons = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@role="button"]')))
-        #for button in buttons:
-        #driver.execute_script("arguments[0].click();", buttons)
-        visible = Truegit
-    except (ElementClickInterceptedException) as e:
-        visible = False
+# while not visible:
+#     try:
+#         buttons = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@role="button"]')))
+#         #for button in buttons:
+#         #driver.execute_script("arguments[0].click();", buttons)
+#         visible = True
+#     except (ElementClickInterceptedException) as e:
+#         visible = False
 
 # ------------------------------------    proberen drop down aan te clicken   --------------------------------------
 
