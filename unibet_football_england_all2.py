@@ -10,32 +10,54 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/all/matches')
 
-driver.find_element_by_xpath("//div[@class='e517e']/option[text()='Totaal doelpunten']").click()
+# driver.find_element_by_xpath("//div[@class='e517e']/option[text()='Totaal doelpunten']").click()
 
-games = driver.find_elements_by_class_name("_0dfcf") # _4a05b _0dfcf f10e9
-print(games[0])
+# search = driver.find_element_by_xpath('.//span[@class = "e517e"]')
 
-allOdds = []
-allNames = []
+search = driver.find_element_by_css_selector("div._1490e")
 
-for game in games:
-    names = game.find_elements_by_class_name("af24c")
-    for name in names:
-        name = name.text.strip()
-        if(len(name) != 0):
-            print(name)
-            allNames.append(name)
+print(search.text)
+search.click()
 
-    odds = game.find_elements_by_xpath('.//span[@class = "_5a5c0"]')
-    for odd in odds:
-        odd = odd.text.strip()
-        if(len(odd) != 0):
-            print(odd)
-            allOdds.append(odd)
+# search2 = driver.find_element_by_css_selector("button._80525")
+
+# search2 = driver.find_element_by_xpath('.//button[@class = "_80525"]')
+
+# search2 = driver.find_element_by_xpath('.//button[contains(text(), "All")]')
+
+# search2 = driver.find_element_by_xpath(".//div[text() = 'All']")
+
+# search2 = driver.find_element_by_class_name("ae466")
+
+# print(search2.text)
+# search2.click()
+
+driver.implicitly_wait(10)
+
+# games = driver.find_elements_by_class_name("_0dfcf") # _4a05b _0dfcf f10e9
+# print(games[0])
+
+# allOdds = []
+# allNames = []
+
+# for game in games:
+#     names = game.find_elements_by_class_name("af24c")
+#     for name in names:
+#         name = name.text.strip()
+#         if(len(name) != 0):
+#             print(name)
+#             allNames.append(name)
+
+#     odds = game.find_elements_by_xpath('.//span[@class = "_5a5c0"]')
+#     for odd in odds:
+#         odd = odd.text.strip()
+#         if(len(odd) != 0):
+#             print(odd)
+#             allOdds.append(odd)
 
 
-print(allOdds)
-print(allNames)
+# print(allOdds)
+# print(allNames)
 
 # allNames = []
 
