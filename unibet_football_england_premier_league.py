@@ -11,10 +11,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import ElementClickInterceptedException
+from csv import writer
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
-driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/all/matches')
+driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/premier_league/all/matches')
 
 
 # ----------------------------------    accept cookies  -------------------------------------------
@@ -53,32 +54,65 @@ while not visible:
 
 # ---------------------------------------   main data ophalen   ---------------------------------------------
 
+time.sleep(2)
+
 games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="_0dfcf"]')))
 
-allOdds = []
-allNames = []
+home_team_wins = []
+away_team_wins = []
+draw = []
+home_teams = []
+away_teams = []
 
 for game in games:
     names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/div[@class="af24c"]')))
-    for name in names:
+    for i, name in enumerate(names):
         name = name.text.strip()
         if(len(name) != 0):
             print(name)
-            allNames.append(name)
+            if(i % 2 == 0):
+                home_teams.append(name)
+            else:
+                away_teams.append(name)
 
     odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class = "_5a5c0"]')))
-    for odd in odds:
-        odd = odd.text.strip()
+    for i in range(3):
+        odd = odds[i].text.strip()
         if(len(odd) != 0):
             print(odd)
-            allOdds.append(odd)
+            if(i % 3 == 0):
+                home_team_wins.append(odd)
+            elif(i % 2 == 0):
+                away_team_wins.append(odd)
+            else:
+                draw.append(odd)
+
+print(home_teams)
+print(len(home_teams))
+print('*'*50)
+print(away_teams)
+print(len(away_teams))
+print('*'*50)
+print(home_team_wins)
+print(len(home_team_wins))
+print('*'*50)
+print(draw)
+print(len(draw))
+print('*'*50)
+print(away_team_wins)
+print(len(away_team_wins))
 
 
-print(allOdds)
-print(allNames)
+# -----------------------------------   write to csv file   --------------------------------------------
 
+with open('unibet_football_england_premier_league.csv', 'w', encoding='utf8', newline='') as f:
+    thewriter = writer(f)
+    header = ['Home_team', 'Away_team', 'Home_team_win', 'Draw', 'Away_team_win']
+    thewriter.writerow(header)
 
-time.sleep(5)
+    for i in range(19):
+        line = [home_teams[i], away_teams[i], home_team_wins[i], draw[i], away_team_wins[i]]
+        thewriter.writerow(line)
 
 
 driver.close()
