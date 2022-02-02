@@ -44,14 +44,16 @@ allOdds = []
 allNames = []
 
 for game in games:
-    names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="af24c"]')))
+    names = WebDriverWait(game, 10).until(EC.presence_of_all_elements_located((By.XPATH, './/div[@class="af24c"]')))
+    # names = game.find_elements_by_xpath('.//div[@class="af24c"]')
     for name in names:
         name = name.text.strip()
         if(len(name) != 0):
             print(name)
             allNames.append(name)
 
-    odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, '//span[@class = "_5a5c0"]')))
+    odds = WebDriverWait(game, 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class = "_5a5c0"]')))
+    # odds = game.find_elements_by_xpath('.//span[@class = "_5a5c0"]')
     for odd in odds:
         odd = odd.text.strip()
         if(len(odd) != 0):

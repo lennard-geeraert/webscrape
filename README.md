@@ -9,3 +9,13 @@ Start project 1/02/2022
 - pip install lxml
 - pip install selenium
 - pip install webdriver-manager
+
+## betsites
+
+- ladbrokes
+- bwin
+- betfirst
+- unibet
+- circus
+- pinnacle
+- napoleon
