@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import TimeoutException
 from csv import writer
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -29,6 +30,8 @@ while not visible:
         visible = True
     except (ElementClickInterceptedException) as e:
         visible = False
+    except (TimeoutException) as t:
+        visible = True
 
 
 # ----------------------------------    open others competitions  -------------------------------------------
@@ -110,7 +113,7 @@ with open('unibet_football_england_premier_league.csv', 'w', encoding='utf8', ne
     header = ['Home_team', 'Away_team', 'Home_team_win', 'Draw', 'Away_team_win']
     thewriter.writerow(header)
 
-    for i in range(19):
+    for i in  range(len(home_teams)):
         line = [home_teams[i], away_teams[i], home_team_wins[i], draw[i], away_team_wins[i]]
         thewriter.writerow(line)
 
