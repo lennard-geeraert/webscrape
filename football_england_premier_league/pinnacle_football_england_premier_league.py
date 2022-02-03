@@ -1,6 +1,3 @@
-from queue import Empty
-from bs4 import BeautifulSoup
-import requests
 import re
 import time
 
@@ -9,7 +6,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import TimeoutException
 from csv import writer
@@ -18,6 +14,9 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver.get('https://www.pinnacle.com/en/soccer/england-premier-league/matchups/#period:0')
 
+print("/"*100)
+print("PINNACLE")
+print("/"*100)
 
 # ----------------------------------    accept cookies  -------------------------------------------
 
@@ -32,7 +31,6 @@ driver.get('https://www.pinnacle.com/en/soccer/england-premier-league/matchups/#
 #         visible = False
 #     except (TimeoutException) as t:
 #         visible = True
-
 
 # ----------------------------------    open others competitions  -------------------------------------------
 
@@ -65,7 +63,7 @@ for game in games:
         for i, name in enumerate(names):
             name = name.text.strip()
             if(len(name) != 0):
-                print(name)
+                # print(name)
                 if(i % 2 == 0):
                     home_teams.append(name)
                 else:
@@ -75,7 +73,7 @@ for game in games:
         for i in range(3):
             odd = odds[i].text.strip()
             if(len(odd) != 0):
-                print(odd)
+                # print(odd)
                 if(i % 3 == 0):
                     home_team_wins.append(odd)
                 elif(i % 2 == 0):
@@ -97,7 +95,6 @@ print(len(draw))
 print('*'*50)
 print(away_team_wins)
 print(len(away_team_wins))
-
 
 # -----------------------------------   write to csv file   --------------------------------------------
 

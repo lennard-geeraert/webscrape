@@ -1,6 +1,3 @@
-from queue import Empty
-from bs4 import BeautifulSoup
-import requests
 import re
 import time
 
@@ -9,7 +6,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.common.exceptions import TimeoutException
 from csv import writer
@@ -18,6 +14,9 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 
 driver.get('https://sports.betway.be/nl/sports/grp/soccer/england/premier-league')
 
+print("/"*100)
+print("BETWAY")
+print("/"*100)
 
 # ----------------------------------    accept cookies  -------------------------------------------
 
@@ -51,9 +50,8 @@ driver.get('https://sports.betway.be/nl/sports/grp/soccer/england/premier-league
 
 time.sleep(10)
 
+# haalt een deel op, andere ophalen via het uitklappen van div???
 games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="eventHolder"]')))
-
-print(len(games))
 
 home_team_wins = []
 away_team_wins = []
@@ -66,7 +64,7 @@ for game in games:
     for i, name in enumerate(names1):
         name = name.text.strip()
         if(len(name) != 0):
-            print(name)
+            # print(name)
             home_teams.append(name)
 
 
@@ -74,14 +72,14 @@ for game in games:
     for i, name in enumerate(names2):
         name = name.text.strip()
         if(len(name) != 0):
-            print(name)
+            # print(name)
             away_teams.append(name)
 
     odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/div[@class="odds"]')))
     for i in range(3):
         odd = odds[i].text.strip()
         if(len(odd) != 0):
-            print(odd)
+            # print(odd)
             if(i % 3 == 0):
                 home_team_wins.append(odd)
             elif(i % 2 == 0):
