@@ -16,22 +16,22 @@ from csv import writer
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
-driver.get('https://sport.circus.be/nl/sport/sportweddenschappen/844/54210798')
+driver.get('https://sports.bwin.be/nl/sports/voetbal-4/wedden/engeland-14/premier-league-102841')
 
 
 # ----------------------------------    accept cookies  -------------------------------------------
 
-visible = False
+# visible = False
 
-while not visible:
-    try:
-        button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "didomi-notice-agree-button")))
-        button.click()
-        visible = True
-    except (ElementClickInterceptedException) as e:
-        visible = False
-    except (TimeoutException) as t:
-        visible = True
+# while not visible:
+#     try:
+#         button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll")))
+#         button.click()
+#         visible = True
+#     except (ElementClickInterceptedException) as e:
+#         visible = False
+#     except (TimeoutException) as t:
+#         visible = True
 
 
 # ----------------------------------    open others competitions  -------------------------------------------
@@ -47,19 +47,11 @@ while not visible:
 #     except (ElementClickInterceptedException) as e:
 #         visible = False
 
-# ------------------------------------    proberen drop down aan te clicken   --------------------------------------
-
-
-# search = driver.find_element_by_css_selector("div._1490e")
-
-# print(search.text)
-# search.click()
-
 # ---------------------------------------   main data ophalen   ---------------------------------------------
 
-time.sleep(4)
+time.sleep(2)
 
-games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="bet-event-main-row"]')))
+games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="grid-event-wrapper"]')))
 
 home_team_wins = []
 away_team_wins = []
@@ -68,9 +60,8 @@ home_teams = []
 away_teams = []
 
 for game in games:
-
-    names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="text"]')))
-    if len(names) ==2:
+    names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/div[@class="participant"]')))
+    if len(names) == 2:
         for i, name in enumerate(names):
             name = name.text.strip()
             if(len(name) != 0):
@@ -80,8 +71,7 @@ for game in games:
                 else:
                     away_teams.append(name)
 
-
-        odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="odd"]')))
+        odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/div[@class="option option-value"]')))
         for i in range(3):
             odd = odds[i].text.strip()
             if(len(odd) != 0):
@@ -109,14 +99,14 @@ print(away_team_wins)
 print(len(away_team_wins))
 
 
-#-----------------------------------   write to csv file   --------------------------------------------
+# -----------------------------------   write to csv file   --------------------------------------------
 
-with open('circus_football_england_premier_league.csv', 'w', encoding='utf8', newline='') as f:
+with open('./football_england_premier_league/bwin_football_england_premier_league.csv', 'w', encoding='utf8', newline='') as f:
     thewriter = writer(f)
     header = ['Home_team', 'Away_team', 'Home_team_win', 'Draw', 'Away_team_win']
     thewriter.writerow(header)
 
-    for i in range(len(home_teams)):
+    for i in  range(len(home_teams)):
         line = [home_teams[i], away_teams[i], home_team_wins[i], draw[i], away_team_wins[i]]
         thewriter.writerow(line)
 
