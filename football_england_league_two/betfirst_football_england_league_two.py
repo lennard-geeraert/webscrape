@@ -12,25 +12,26 @@ from csv import writer
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
-driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/premier_league/all/matches')
+driver.get('https://betfirst.dhnet.be/nl/voetbal/engeland-league-two/')
 
 print("/"*100)
-print("UNIBET")
+print("BETFIRST")
 print("/"*100)
 
 # ----------------------------------    accept cookies  -------------------------------------------
 
-visible = False
+# visible = False
 
-while not visible:
-    try:
-        button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll")))
-        button.click()
-        visible = True
-    except (ElementClickInterceptedException) as e:
-        visible = False
-    except (TimeoutException) as t:
-        visible = True
+# while not visible:
+#     try:
+#         button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll")))
+#         button.click()
+#         visible = True
+#     except (ElementClickInterceptedException) as e:
+#         visible = False
+#     except (TimeoutException) as t:
+#         visible = True
+
 
 # ----------------------------------    open others competitions  -------------------------------------------
 
@@ -47,11 +48,10 @@ while not visible:
 
 # ---------------------------------------   main data ophalen   ---------------------------------------------
 
-time.sleep(4)
+time.sleep(2)
 
-games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="f9aec _0c119 bd9c6"]')))
-
-print(len(games))
+# haalt maar een deel op, terwijl er veel meer mogelijk zijn
+games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="rj-ev-list__ev-card__inner"]')))
 
 home_team_wins = []
 away_team_wins = []
@@ -60,7 +60,7 @@ home_teams = []
 away_teams = []
 
 for game in games:
-    names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/div[@class="_6548b"]')))
+    names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="rj-ev-list__name-text"]')))
     if len(names) == 2:
         for i, name in enumerate(names):
             name = name.text.strip()
@@ -71,7 +71,7 @@ for game in games:
                 else:
                     away_teams.append(name)
 
-        odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/button[@class="_278bc"]')))
+        odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="rj-ev-list__bet-btn__content rj-ev-list__bet-btn__odd"]')))
         for i in range(3):
             odd = odds[i].text.strip()
             if(len(odd) != 0):
@@ -98,9 +98,10 @@ print('*'*50)
 print(away_team_wins)
 print(len(away_team_wins))
 
+
 # -----------------------------------   write to csv file   --------------------------------------------
 
-with open('.\\football_england_premier_league\\unibet_football_england_premier_league.csv', 'w', encoding='utf8', newline='') as f:
+with open('.\\football_england_league_two\\betfirst_football_england_league_two.csv', 'w', encoding='utf8', newline='') as f:
     thewriter = writer(f)
     header = ['Home_team', 'Away_team', 'Home_team_win', 'Draw', 'Away_team_win']
     thewriter.writerow(header)

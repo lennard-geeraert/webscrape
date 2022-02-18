@@ -51,6 +51,8 @@ time.sleep(2)
 
 games = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="style_row__3q4g_ style_row__3hCMX"]')))
 
+print(len(games))
+
 home_team_wins = []
 away_team_wins = []
 draw = []
@@ -58,28 +60,34 @@ home_teams = []
 away_teams = []
 
 for game in games:
-    names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="ellipsis event-row-participant style_participant__H8-ku"]')))
-    if len(names) == 2:
-        for i, name in enumerate(names):
-            name = name.text.strip()
-            if(len(name) != 0):
-                # print(name)
-                if(i % 2 == 0):
-                    home_teams.append(name)
-                else:
-                    away_teams.append(name)
-
+    try:
+        names = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="ellipsis event-row-participant style_participant__H8-ku"]')))
+        print(len(names))
         odds = WebDriverWait(driver = game, timeout = 10).until(EC.presence_of_all_elements_located((By.XPATH, './/span[@class="style_price__15SlF"]')))
-        for i in range(3):
-            odd = odds[i].text.strip()
-            if(len(odd) != 0):
-                # print(odd)
-                if(i % 3 == 0):
-                    home_team_wins.append(odd)
-                elif(i % 2 == 0):
-                    away_team_wins.append(odd)
-                else:
-                    draw.append(odd)
+        print(len(odds))
+        if len(names) == 2 and len(odds) >= 3:
+            for i, name in enumerate(names):
+                name = name.text.strip()
+                if(len(name) != 0):
+                    # print(name)
+                    if(i % 2 == 0):
+                        home_teams.append(name)
+                    else:
+                        away_teams.append(name)
+
+            
+            for i in range(3):
+                odd = odds[i].text.strip()
+                if(len(odd) != 0):
+                    # print(odd)
+                    if(i % 3 == 0):
+                        home_team_wins.append(odd)
+                    elif(i % 2 == 0):
+                        away_team_wins.append(odd)
+                    else:
+                        draw.append(odd)
+    except (TimeoutException) as t:
+        continue
 
 print(home_teams)
 print(len(home_teams))

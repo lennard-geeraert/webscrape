@@ -12,7 +12,7 @@ from csv import writer
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
-driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/premier_league/all/matches')
+driver.get('https://nl-sports.unibet.be/betting/sports/filter/football/england/league_two/all/matches')
 
 print("/"*100)
 print("UNIBET")
@@ -100,7 +100,7 @@ print(len(away_team_wins))
 
 # -----------------------------------   write to csv file   --------------------------------------------
 
-with open('.\\football_england_premier_league\\unibet_football_england_premier_league.csv', 'w', encoding='utf8', newline='') as f:
+with open('.\\football_england_league_two\\unibet_football_england_league_two.csv', 'w', encoding='utf8', newline='') as f:
     thewriter = writer(f)
     header = ['Home_team', 'Away_team', 'Home_team_win', 'Draw', 'Away_team_win']
     thewriter.writerow(header)
